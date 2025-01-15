@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "meta.csv",
 				"folderPath": "01152015",
 				"fileSystem": "refined"
 			}

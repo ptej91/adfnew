@@ -7,8 +7,10 @@
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
-					"retry": 1,
-					"retryIntervalInSeconds": 30
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
@@ -16,7 +18,9 @@
 						"referenceName": "SrcPath",
 						"type": "DatasetReference"
 					},
-					"fieldList": [],
+					"fieldList": [
+						"lastModified"
+					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"enablePartitionDiscovery": false
@@ -104,57 +108,25 @@
 					}
 				],
 				"policy": {
-					"retry": {
-						"count": 3,
-						"intervalInSeconds": 30
-					},
-					"retryIntervalInSeconds": 30
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
 				},
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "JsonSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "JsonReadSettings"
-						},
-						"typeProperties": {
-							"columnDelimiter": ",",
-							"rowDelimiter": "\n"
-						}
+						"type": "InlineSource"
 					},
 					"sink": {
-						"type": "JsonSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings",
-							"copyBehavior": "FlattenHierarchy"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings"
-						},
+						"type": "AzureDataLakeStoreSink",
 						"dataset": {
-							"referenceName": "ADLSSinkCsvDataset",
+							"referenceName": "ADLSOutputDataset",
 							"type": "DatasetReference"
 						}
 					},
 					"enableStaging": false
 				},
-				"inputs": [
-					{
-						"referenceName": "SrcPath",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "Jsonsync",
-						"type": "DatasetReference"
-					}
-				],
 				"linkedServiceName": {
 					"referenceName": "AzureDataLakeLinkedService",
 					"type": "LinkedServiceReference"
