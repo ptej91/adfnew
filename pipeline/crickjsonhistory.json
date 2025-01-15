@@ -39,7 +39,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Json1",
+						"referenceName": "JsonSrc",
 						"type": "DatasetReference"
 					}
 				],

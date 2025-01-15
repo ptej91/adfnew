@@ -1,5 +1,5 @@
 {
-	"name": "Json1",
+	"name": "JsonSrc",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "rawsrc",
