@@ -1,0 +1,325 @@
+{
+	"name": "SrcPath",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS Lake Path SRC",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"meta": {
+					"type": "object",
+					"properties": {
+						"data_version": {
+							"type": "string"
+						},
+						"created": {
+							"type": "string"
+						},
+						"revision": {
+							"type": "integer"
+						}
+					}
+				},
+				"info": {
+					"type": "object",
+					"properties": {
+						"balls_per_over": {
+							"type": "integer"
+						},
+						"city": {
+							"type": "string"
+						},
+						"dates": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"event": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"match_number": {
+									"type": "integer"
+								},
+								"group": {
+									"type": "string"
+								}
+							}
+						},
+						"gender": {
+							"type": "string"
+						},
+						"match_type": {
+							"type": "string"
+						},
+						"match_type_number": {
+							"type": "integer"
+						},
+						"officials": {
+							"type": "object",
+							"properties": {
+								"match_referees": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"reserve_umpires": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"umpires": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"outcome": {
+							"type": "object",
+							"properties": {
+								"winner": {
+									"type": "string"
+								},
+								"by": {
+									"type": "object",
+									"properties": {
+										"runs": {
+											"type": "integer"
+										}
+									}
+								}
+							}
+						},
+						"overs": {
+							"type": "integer"
+						},
+						"player_of_match": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"players": {
+							"type": "object",
+							"properties": {
+								"Hong Kong": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"Kuwait": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"registry": {
+							"type": "object",
+							"properties": {
+								"people": {
+									"type": "object",
+									"properties": {
+										"A Shukla": {
+											"type": "string"
+										},
+										"Aizaz Khan": {
+											"type": "string"
+										},
+										"Ali Naqvi": {
+											"type": "string"
+										},
+										"Anshuman Rath": {
+											"type": "string"
+										},
+										"BB Pradhan": {
+											"type": "string"
+										},
+										"Babar Hayat": {
+											"type": "string"
+										},
+										"Bilal Tahir": {
+											"type": "string"
+										},
+										"CV Anto": {
+											"type": "string"
+										},
+										"Ehsan Khan": {
+											"type": "string"
+										},
+										"M Coetzee": {
+											"type": "string"
+										},
+										"MNM Aslam": {
+											"type": "string"
+										},
+										"Meet Bhavsar": {
+											"type": "string"
+										},
+										"Mohamed Shafeeq": {
+											"type": "string"
+										},
+										"Mohammad Ghazanfar": {
+											"type": "string"
+										},
+										"Nasrulla Rana": {
+											"type": "string"
+										},
+										"Nizakat Khan": {
+											"type": "string"
+										},
+										"Parvindar Kumar": {
+											"type": "string"
+										},
+										"R Sandaruwan": {
+											"type": "string"
+										},
+										"Sarika Prasad": {
+											"type": "string"
+										},
+										"Sayed Monib": {
+											"type": "string"
+										},
+										"Shiraz Khan": {
+											"type": "string"
+										},
+										"Usman Patel": {
+											"type": "string"
+										},
+										"V Kalidas": {
+											"type": "string"
+										},
+										"Yasim Murtaza": {
+											"type": "string"
+										},
+										"Yasin Patel": {
+											"type": "string"
+										},
+										"Zeeshan Ali": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						},
+						"season": {
+							"type": "string"
+						},
+						"team_type": {
+							"type": "string"
+						},
+						"teams": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"toss": {
+							"type": "object",
+							"properties": {
+								"decision": {
+									"type": "string"
+								},
+								"winner": {
+									"type": "string"
+								}
+							}
+						},
+						"venue": {
+							"type": "string"
+						}
+					}
+				},
+				"innings": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"team": {
+								"type": "string"
+							},
+							"overs": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"over": {
+											"type": "integer"
+										},
+										"deliveries": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"batter": {
+														"type": "string"
+													},
+													"bowler": {
+														"type": "string"
+													},
+													"non_striker": {
+														"type": "string"
+													},
+													"runs": {
+														"type": "object",
+														"properties": {
+															"batter": {
+																"type": "integer"
+															},
+															"extras": {
+																"type": "integer"
+															},
+															"total": {
+																"type": "integer"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							},
+							"powerplays": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"from": {
+											"type": "number"
+										},
+										"to": {
+											"type": "number"
+										},
+										"type": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

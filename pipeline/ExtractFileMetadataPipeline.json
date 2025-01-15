@@ -1,0 +1,171 @@
+{
+	"name": "ExtractFileMetadataPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata - List Files",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"retry": 1,
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "SrcPath",
+						"type": "DatasetReference"
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "JsonReadSettings"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeLinkedService",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Initialize CSV Content",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata - List Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "csvContent",
+					"value": {
+						"value": "@string('')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach - Process Files",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Initialize CSV Content",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata - List Files').output.childItems",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set Variable - Append CSV Row",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "csvContent",
+								"value": {
+									"value": "@concat(variables('csvContent'), item().name, ',', formatDateTime(item().lastModified, 'yyyy-MM-dd HH:mm:ss'), ',', item().size, '\n')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Copy Data - Write CSV to ADLS",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "ForEach - Process Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"retry": {
+						"count": 3,
+						"intervalInSeconds": 30
+					},
+					"retryIntervalInSeconds": 30
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						},
+						"typeProperties": {
+							"columnDelimiter": ",",
+							"rowDelimiter": "\n"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						},
+						"dataset": {
+							"referenceName": "ADLSSinkCsvDataset",
+							"type": "DatasetReference"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "SrcPath",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Jsonsync",
+						"type": "DatasetReference"
+					}
+				],
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeLinkedService",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"variables": {
+			"csvContent": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
