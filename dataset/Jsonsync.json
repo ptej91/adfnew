@@ -1,0 +1,19 @@
+{
+	"name": "Jsonsync",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "01152015",
+				"fileSystem": "refined"
+			}
+		},
+		"schema": {}
+	}
+}
