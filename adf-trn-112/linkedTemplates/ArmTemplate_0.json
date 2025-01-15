@@ -1,0 +1,514 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-trn-112"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"adls1jsobsc_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'adls1jsobsc'"
+		},
+		"rawsrc_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'rawsrc'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakesyn112.dfs.core.windows.net/"
+		},
+		"adls1jsobsc_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stddatalake112.dfs.core.windows.net/"
+		},
+		"rawsrc_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://datalakesrc112.dfs.core.windows.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adls1jsobsc')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('adls1jsobsc_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('adls1jsobsc_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/rawsrc')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('rawsrc_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('rawsrc_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/JsonSrc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "rawsrc",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "1405316.json",
+						"folderPath": "01152005",
+						"fileSystem": "raw"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"meta": {
+							"type": "object",
+							"properties": {
+								"data_version": {
+									"type": "string"
+								},
+								"created": {
+									"type": "string"
+								},
+								"revision": {
+									"type": "integer"
+								}
+							}
+						},
+						"info": {
+							"type": "object",
+							"properties": {
+								"balls_per_over": {
+									"type": "integer"
+								},
+								"city": {
+									"type": "string"
+								},
+								"dates": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"event": {
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"match_number": {
+											"type": "integer"
+										},
+										"group": {
+											"type": "string"
+										}
+									}
+								},
+								"gender": {
+									"type": "string"
+								},
+								"match_type": {
+									"type": "string"
+								},
+								"match_type_number": {
+									"type": "integer"
+								},
+								"officials": {
+									"type": "object",
+									"properties": {
+										"match_referees": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										},
+										"reserve_umpires": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										},
+										"umpires": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										}
+									}
+								},
+								"outcome": {
+									"type": "object",
+									"properties": {
+										"winner": {
+											"type": "string"
+										},
+										"by": {
+											"type": "object",
+											"properties": {
+												"runs": {
+													"type": "integer"
+												}
+											}
+										}
+									}
+								},
+								"overs": {
+									"type": "integer"
+								},
+								"player_of_match": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"players": {
+									"type": "object",
+									"properties": {
+										"Hong Kong": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										},
+										"Kuwait": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										}
+									}
+								},
+								"registry": {
+									"type": "object",
+									"properties": {
+										"people": {
+											"type": "object",
+											"properties": {
+												"A Shukla": {
+													"type": "string"
+												},
+												"Aizaz Khan": {
+													"type": "string"
+												},
+												"Ali Naqvi": {
+													"type": "string"
+												},
+												"Anshuman Rath": {
+													"type": "string"
+												},
+												"BB Pradhan": {
+													"type": "string"
+												},
+												"Babar Hayat": {
+													"type": "string"
+												},
+												"Bilal Tahir": {
+													"type": "string"
+												},
+												"CV Anto": {
+													"type": "string"
+												},
+												"Ehsan Khan": {
+													"type": "string"
+												},
+												"M Coetzee": {
+													"type": "string"
+												},
+												"MNM Aslam": {
+													"type": "string"
+												},
+												"Meet Bhavsar": {
+													"type": "string"
+												},
+												"Mohamed Shafeeq": {
+													"type": "string"
+												},
+												"Mohammad Ghazanfar": {
+													"type": "string"
+												},
+												"Nasrulla Rana": {
+													"type": "string"
+												},
+												"Nizakat Khan": {
+													"type": "string"
+												},
+												"Parvindar Kumar": {
+													"type": "string"
+												},
+												"R Sandaruwan": {
+													"type": "string"
+												},
+												"Sarika Prasad": {
+													"type": "string"
+												},
+												"Sayed Monib": {
+													"type": "string"
+												},
+												"Shiraz Khan": {
+													"type": "string"
+												},
+												"Usman Patel": {
+													"type": "string"
+												},
+												"V Kalidas": {
+													"type": "string"
+												},
+												"Yasim Murtaza": {
+													"type": "string"
+												},
+												"Yasin Patel": {
+													"type": "string"
+												},
+												"Zeeshan Ali": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								},
+								"season": {
+									"type": "string"
+								},
+								"team_type": {
+									"type": "string"
+								},
+								"teams": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"toss": {
+									"type": "object",
+									"properties": {
+										"decision": {
+											"type": "string"
+										},
+										"winner": {
+											"type": "string"
+										}
+									}
+								},
+								"venue": {
+									"type": "string"
+								}
+							}
+						},
+						"innings": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"team": {
+										"type": "string"
+									},
+									"overs": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"over": {
+													"type": "integer"
+												},
+												"deliveries": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"batter": {
+																"type": "string"
+															},
+															"bowler": {
+																"type": "string"
+															},
+															"non_striker": {
+																"type": "string"
+															},
+															"runs": {
+																"type": "object",
+																"properties": {
+																	"batter": {
+																		"type": "integer"
+																	},
+																	"extras": {
+																		"type": "integer"
+																	},
+																	"total": {
+																		"type": "integer"
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									},
+									"powerplays": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"from": {
+													"type": "number"
+												},
+												"to": {
+													"type": "number"
+												},
+												"type": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/rawsrc')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Jsonsync')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "01152015",
+						"fileSystem": "refined"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/crickjsonhistory')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy file",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "JsonSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Jsonsync",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/JsonSrc')]",
+				"[concat(variables('factoryId'), '/datasets/Jsonsync')]"
+			]
+		}
+	]
+}
